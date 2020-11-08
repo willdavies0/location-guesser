@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native-paper';
+import { View, Text } from 'react-native';
 
 export default function PlayScreen() {
   return (
