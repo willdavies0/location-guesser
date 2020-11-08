@@ -20,7 +20,7 @@ export default function HomeScreen(props) {
   const dispatch = useDispatch();
 
   const setSelectedCategory = value => {
-    dispatch({ type: C.SET_SELECTED_CATEGORY, value });
+    dispatch({ type: C.SET_CATEGORY, value });
   };
 
   return (

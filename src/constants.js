@@ -3,4 +3,4 @@ export const SCREENS = {
   PLAY: 'play',
   SCORE: 'score'
 };
-export const SET_SELECTED_CATEGORY = 'SET_SELECTED_CATEGORY';
+export const SET_CATEGORY = 'SET_CATEGORY';

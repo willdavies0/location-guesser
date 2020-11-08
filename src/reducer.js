@@ -3,7 +3,7 @@ import * as C from './constants';
 
 const reducer = (state = defaultState, action) => {
   switch (action.type) {
-    case C.SET_SELECTED_CATEGORY:
+    case C.SET_CATEGORY:
       return {
         ...state,
         selectedCategory: action.value !== undefined ? action.value : null
