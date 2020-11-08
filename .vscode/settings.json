@@ -1,0 +1,11 @@
+{
+  "eslint.enable": true,
+  "eslint.alwaysShowStatus": true,
+  "eslint.lintTask.enable": true,
+  "files.exclude": {
+    "**/*.DS_Store": true,
+    "**/*.expo": true,
+    "**/*.git": true,
+    "node_modules/": true
+  }
+}

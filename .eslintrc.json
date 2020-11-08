@@ -1,0 +1,63 @@
+{
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended"
+    ],
+    "settings": {
+        "react": {
+            "version": "999.99.9"
+        }
+    },
+    "plugins": [
+        "react",
+        "prettier"
+    ],
+    "parser": "babel-eslint",
+    "parserOptions": {
+        "ecmaVersion": 8,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "env": {
+        "node": true,
+        "browser": true,
+        "es6": true
+    },
+    "rules": {
+        "react/jsx-filename-extension": [
+            1,
+            {
+                "extensions": [
+                    ".js",
+                    ".jsx"
+                ]
+            }
+        ],
+        "prettier/prettier": [
+            "warn",
+            {
+                "singleQuote": true,
+                "trailingComma": "none",
+                "arrowParens": "avoid"
+            }
+        ],
+        "no-unused-vars": [
+            1,
+            {
+                "vars": "all",
+                "args": "none"
+            }
+        ],
+        "no-console": 0,
+        "react/prop-types": 0,
+        "react/react-in-jsx-scope": "off",
+        "no-sync": 1
+    },
+    "globals": {
+        "ga": true,
+        "objectLoop": true,
+        "io": true
+    }
+}
