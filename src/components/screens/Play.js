@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, Text } from 'react-native-paper';
+import { Text } from 'react-native';
+import Wrapper from '../utils/Wrapper';
 
-export default function PlayScreen() {
+export default function PlayScreen(props) {
   return (
-    <View>
+    <Wrapper>
       <Text>Play Screen</Text>
-    </View>
+    </Wrapper>
   );
 }
