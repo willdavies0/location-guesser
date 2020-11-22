@@ -1,11 +1,11 @@
 import React from 'react';
 import { Text } from 'react-native';
-import Wrapper from '../utils/Wrapper';
+import CenterWrapper from '../utils/CenterWrapper';
 
 export default function PlayScreen(props) {
   return (
-    <Wrapper>
+    <CenterWrapper>
       <Text>Play Screen</Text>
-    </Wrapper>
+    </CenterWrapper>
   );
 }

@@ -9,6 +9,6 @@ const styles = StyleSheet.create({
   }
 });
 
-export default function Wrapper(props) {
+export default function CenterWrapper(props) {
   return <View style={styles.container}>{props.children}</View>;
 }

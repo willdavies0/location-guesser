@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Button } from 'react-native';
 import * as C from '../../constants';
-import Wrapper from '../utils/Wrapper';
+import CenterWrapper from '../utils/CenterWrapper';
 
 export default function HomeScreen(props) {
   const calibrated = useSelector(store => store.calibrated);
@@ -14,8 +14,8 @@ export default function HomeScreen(props) {
   };
 
   return (
-    <Wrapper>
+    <CenterWrapper>
       <Button title="play" onPress={() => play()} />
-    </Wrapper>
+    </CenterWrapper>
   );
 }
