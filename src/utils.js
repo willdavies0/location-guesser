@@ -10,9 +10,18 @@ export function round(value) {
   return Math.floor(value * 100) / 100;
 }
 
-export function calculateAngle({ x, y }) {
-  if (Math.atan2(y, x) >= 0) return Math.atan2(y, x) * (180 / Math.PI);
-  return (Math.atan2(y, x) + 2 * Math.PI) * (180 / Math.PI);
+export function calculateAngle({ x, y, offset = false }) {
+  let angle;
+  if (Math.atan2(y, x) >= 0) angle = Math.atan2(y, x) * (180 / Math.PI);
+  else angle = (Math.atan2(y, x) + 2 * Math.PI) * (180 / Math.PI);
+
+  if (!offset) return angle;
+  return offsetCalc(angle);
+}
+
+function offsetCalc(angle) {
+  if (angle - 90 >= 0) return angle - 90;
+  else return angle + 271;
 }
 
 export function calculateDirection(angle) {

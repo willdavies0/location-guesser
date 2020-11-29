@@ -22,7 +22,7 @@ const useMagnetometer = () => {
   const _subscribe = () => {
     setSubscription(
       Magnetometer.addListener(({ x, y, z }) => {
-        setData({ x, y, z, angle: calculateAngle({ x, y }) });
+        setData({ x, y, z, angle: calculateAngle({ x, y, offset: true }) });
       })
     );
   };
@@ -56,7 +56,7 @@ export default function CalibrateScreen() {
           {coord}: {round(data[coord])}
         </Text>
       ))}
-      <Text>Direction: {calculateDirection(data.angle)}</Text>
+      <Text>Direction: {calculateDirection(data.angle, true)}</Text>
       {pressables.map((p, i) => (
         <TouchableOpacity
           key={i}
