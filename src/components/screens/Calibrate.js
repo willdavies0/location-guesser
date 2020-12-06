@@ -1,8 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { Magnetometer } from 'expo-sensors';
-import { Text, TouchableOpacity } from 'react-native';
+import { Asset } from 'expo-asset';
 import CenterWrapper from '../utils/CenterWrapper';
 import { round, calculateAngle, calculateDirection } from '../../utils';
+
+import {
+  Text,
+  TouchableOpacity,
+  View,
+  StyleSheet,
+  Image,
+  Dimensions
+} from 'react-native';
+
+const styles = StyleSheet.create({
+  rotatingContainer: {
+    flex: 1,
+    alignSelf: 'center'
+  }
+});
 
 const useMagnetometer = () => {
   const [data, setData] = useState({
@@ -42,20 +58,31 @@ const useMagnetometer = () => {
 };
 
 export default function CalibrateScreen() {
+  const uri = Asset.fromModule(require('../../assets/images/compass.jpg')).uri;
+  const [imgWidth, setImgWidth] = useState(100);
+  const [imgHeight, setImgHeight] = useState(100);
   const [data, interval, setMagnetometerInterval] = useMagnetometer();
+  const imgRef = React.useRef();
 
   const pressables = [
     { text: 'Faster', variant: '+' },
     { text: 'Slower', variant: '-' }
   ];
+
+  useEffect(() => {
+    Image.getSize(uri, (width, height) => {
+      setImgWidth(Dimensions.get('window').width);
+      const aspectRatio = width / height;
+      setImgHeight(Dimensions.get('window').width / aspectRatio);
+    });
+
+    return () => {};
+  }, []);
+
   return (
     <CenterWrapper>
       <Text>Current Interval: {interval}ms</Text>
-      {Object.keys(data).map((coord, i) => (
-        <Text key={i}>
-          {coord}: {round(data[coord])}
-        </Text>
-      ))}
+      <Text>Angle: {round(data.angle)}</Text>
       <Text>Direction: {calculateDirection(data.angle, true)}</Text>
       {pressables.map((p, i) => (
         <TouchableOpacity
@@ -65,6 +92,18 @@ export default function CalibrateScreen() {
           <Text>{p.text}</Text>
         </TouchableOpacity>
       ))}
+      <View style={styles.rotatingContainer}>
+        <Image
+          ref={imgRef}
+          source={require('../../assets/images/compass.jpg')}
+          style={{
+            width: imgWidth,
+            height: imgHeight,
+            resizeMode: 'center',
+            transform: [{ rotate: 360 - data.angle + 'deg' }]
+          }}
+        />
+      </View>
     </CenterWrapper>
   );
 }
