@@ -1,3 +1,5 @@
-const state = {};
+const state = {
+  calibrated: false
+};
 
 export default state;

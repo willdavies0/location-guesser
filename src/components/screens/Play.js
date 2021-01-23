@@ -1,10 +1,12 @@
 import React from 'react';
-import { View, Text } from 'react-native-paper';
+import { CenterWrapper, Compass, useMagnetometer } from '../utils/';
 
-export default function PlayScreen() {
+export default function PlayScreen(props) {
+  const [data] = useMagnetometer();
+
   return (
-    <View>
-      <Text>Play Screen</Text>
-    </View>
+    <CenterWrapper>
+      <Compass angle={data.angle} />
+    </CenterWrapper>
   );
 }
