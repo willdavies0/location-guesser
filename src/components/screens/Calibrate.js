@@ -1,39 +1,83 @@
-import React from 'react';
-import { round, calculateDirection } from '../../utils';
+import React, { useEffect, useState, useCallback } from 'react';
+import { round } from '../../utils';
 import { useMagnetometer, Compass, CenterWrapper } from '../utils/';
+import * as C from '../../constants';
 
-import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
+import { Text, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
-const styles = StyleSheet.create({
-  rotatingContainer: {
-    flex: 1,
-    alignSelf: 'center'
+const rotatingContainer = correct => {
+  let styles = { flex: 1, borderWidth: 10 };
+  if (correct) styles.borderColor = 'green';
+  else styles.borderColor = 'red';
+  return styles;
+};
+
+const calibrated = (angle, range = 10) => {
+  const halfRange = range / 2;
+  if (angle < halfRange || angle > 360 - halfRange) {
+    return true;
   }
-});
+  return false;
+};
 
-export default function CalibrateScreen() {
-  const [data, interval, setMagnetometerInterval] = useMagnetometer();
+const defaultText = 'Point device north';
 
-  const pressables = [
-    { text: 'Faster', variant: '+' },
-    { text: 'Slower', variant: '-' }
-  ];
+function useCalibrateState(calibratedAction) {
+  const [displayText, setDisplayText] = useState(defaultText);
+  const [aligned, setAligned] = useState(false);
+  const [timeoutId, setTimeoutId] = useState(null);
+
+  const [data] = useMagnetometer();
+
+  const calibrateRange = useSelector(store => store.calibrateRange);
+  const calibrateTimeout = useSelector(store => store.calibrateTimeout); // in seconds
+
+  const setCalibrateState = useCallback(
+    (newAligned, newTimeoutId) => {
+      if (newAligned) {
+        setDisplayText('Hold here to calibrate');
+      } else {
+        setDisplayText(defaultText);
+      }
+      setAligned(newAligned);
+      setTimeoutId(newTimeoutId);
+    },
+    [setDisplayText, setAligned, setTimeoutId]
+  );
+
+  useEffect(() => {
+    if (calibrated(data.angle, calibrateRange)) {
+      if (!aligned) {
+        let t = setTimeout(() => {
+          setTimeoutId(null);
+          calibratedAction();
+        }, calibrateTimeout * 1000);
+        setCalibrateState(true, t);
+      }
+    } else {
+      clearTimeout(timeoutId);
+      setCalibrateState(false, null);
+    }
+  }, [data.angle, setCalibrateState, calibrateRange, calibrateTimeout]);
+
+  return { aligned, displayText, angle: data.angle };
+}
+
+export default function CalibrateScreen(props) {
+  const dispatch = useDispatch();
+  const calibratedAction = () => {
+    dispatch({ type: C.SET_CALIBRATED, value: true });
+    props.navigation.navigate(C.SCREENS.PLAY);
+  };
+  const { aligned, displayText, angle } = useCalibrateState(calibratedAction);
 
   return (
     <CenterWrapper>
-      <Text>Current Interval: {interval}ms</Text>
-      <Text>Angle: {round(data.angle)}</Text>
-      <Text>Direction: {calculateDirection(data.angle, true)}</Text>
-      {pressables.map((p, i) => (
-        <TouchableOpacity
-          key={i}
-          onPress={() => setMagnetometerInterval(p.variant)}
-        >
-          <Text>{p.text}</Text>
-        </TouchableOpacity>
-      ))}
-      <View style={styles.rotatingContainer}>
-        <Compass angle={data.angle} />
+      <Text>Angle: {round(angle)}</Text>
+      <Text>{displayText}</Text>
+      <View style={rotatingContainer(aligned)}>
+        <Compass angle={angle} />
       </View>
     </CenterWrapper>
   );

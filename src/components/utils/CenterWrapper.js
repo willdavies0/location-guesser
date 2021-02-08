@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  constainer: {
+  container: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center'

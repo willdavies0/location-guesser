@@ -11,7 +11,7 @@ const useMagnetometer = () => {
     direction: ''
   });
   const [subscription, setSubscription] = useState(null);
-  const [interval, setInterval] = useState(500);
+  const [interval, setInterval] = useState(100);
 
   useEffect(() => {
     if (subscription) _unsubscribe(subscription);
