@@ -6,8 +6,19 @@ const reducer = (state = defaultState, action) => {
     case C.SET_CALIBRATED:
       return {
         ...state,
-        calibrated:
-          action.value !== undefined ? action.value : !state.calibrated
+        calibrate: {
+          ...state.calibrate,
+          state:
+            action.value !== undefined ? action.value : !state.calibrate.state
+        }
+      };
+    case C.SET_MAGNETOMETER_INTERVAL:
+      return {
+        ...state,
+        magnetometer: {
+          ...state.magnetometer,
+          interval: action.interval
+        }
       };
     default:
       return state;

@@ -30,8 +30,10 @@ function useCalibrateState(calibratedAction) {
 
   const [data] = useMagnetometer();
 
-  const calibrateRange = useSelector(store => store.calibrateRange);
-  const calibrateTimeout = useSelector(store => store.calibrateTimeout); // in seconds
+  const calibrateRange = useSelector(store => store.calibrate.range);
+  const calibrateTimeoutValue = useSelector(
+    store => store.calibrate.timeoutValue
+  ); // in ms
 
   const setCalibrateState = useCallback(
     (newAligned, newTimeoutId) => {
@@ -52,14 +54,14 @@ function useCalibrateState(calibratedAction) {
         let t = setTimeout(() => {
           setTimeoutId(null);
           calibratedAction();
-        }, calibrateTimeout * 1000);
+        }, calibrateTimeoutValue);
         setCalibrateState(true, t);
       }
     } else {
       clearTimeout(timeoutId);
       setCalibrateState(false, null);
     }
-  }, [data.angle, setCalibrateState, calibrateRange, calibrateTimeout]);
+  }, [data.angle, setCalibrateState, calibrateRange, calibrateTimeoutValue]);
 
   return { aligned, displayText, angle: data.angle };
 }

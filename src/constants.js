@@ -5,3 +5,4 @@ export const SCREENS = {
   CALIBRATE: 'calibrate'
 };
 export const SET_CALIBRATED = 'SET_CALIBRATED';
+export const SET_MAGNETOMETER_INTERVAL = 'SET_MAGNETOMETER_INTERVAL';

@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Magnetometer } from 'expo-sensors';
+
 import { calculateAngle, calculateDirection } from '../../utils';
+import * as C from '../../constants';
 
 const useMagnetometer = () => {
   const [data, setData] = useState({
@@ -10,8 +13,9 @@ const useMagnetometer = () => {
     angle: 0,
     direction: ''
   });
+  const interval = useSelector(store => store.magnetometer.interval);
+  const dispatch = useDispatch();
   const [subscription, setSubscription] = useState(null);
-  const [interval, setInterval] = useState(100);
 
   useEffect(() => {
     if (subscription) _unsubscribe(subscription);
@@ -36,7 +40,7 @@ const useMagnetometer = () => {
 
   const setMagnetometerInterval = variant => {
     let newInterval = variant === '+' ? interval / 2 : interval * 2;
-    setInterval(newInterval);
+    dispatch({ type: C.SET_MAGNETOMETER_INTERVAL, interval: newInterval });
     Magnetometer.setUpdateInterval(newInterval);
   };
 
