@@ -1,11 +1,12 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Button } from 'react-native';
+import { Button, Text } from 'react-native';
 import * as C from '../../constants';
-import { CenterWrapper } from '../utils/';
+import { CenterWrapper, useSetupLocationServices } from '../utils/';
 
 export default function HomeScreen(props) {
   const calibrated = useSelector(store => store.calibrated);
+  const locationError = useSetupLocationServices();
 
   const play = () => {
     let newScreen = C.SCREENS.PLAY;
@@ -16,6 +17,7 @@ export default function HomeScreen(props) {
   return (
     <CenterWrapper>
       <Button title="play" onPress={() => play()} />
+      <Text>{locationError}</Text>
     </CenterWrapper>
   );
 }
